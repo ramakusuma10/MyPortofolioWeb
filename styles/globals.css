@@ -22,3 +22,99 @@ a {
   font-family: "burtons";
   src: url("../public/Burtons.otf");
 }
+
+.rainbow-text {
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: color 0.3s ease;
+}
+
+.rainbow-hover:hover {
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.dark .rainbow-hover-light:hover {
+  background: linear-gradient(45deg, #ff6666, #ffcc66, #ffff66, #66ff66, #66ccff, #6666ff, #cc66ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes color-cycle {
+  0% {
+    color: black;
+  }
+  25% {
+    color: red;
+  }
+  50% {
+    color: orange;
+  }
+  75% {
+    color: green;
+  }
+  100% {
+    color: blue;
+  }
+}
+
+.animate-color-cycle {
+  animation: color-cycle 4s ease-in-out infinite alternate;
+}
+
+@keyframes dark-color-cycle {
+  0% {
+    color: white;
+  }
+  25% {
+    color: red;
+  }
+  50% {
+    color: orange;
+  }
+  75% {
+    color: green;
+  }
+  100% {
+    color: blue;
+  }
+}
+
+.animate-dark-color-cycle {
+  animation: dark-color-cycle 4s ease-in-out infinite alternate;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  from { border-color: transparent; }
+  to { border-color: black; }
+}
+
+.typing-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid black;
+  width: 0;
+  animation: typing 4s steps(20) 1s forwards, blink 0.7s step-end infinite alternate;
+}
+
+.second-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid black;
+  width: 0;
+  animation: typing 5s steps(25) 3s forwards, blink 0.7s step-end infinite alternate;
+}
+
+.dark .typing-text,
+.dark .second-text {
+  border-color: white;
+}
