@@ -1,22 +1,91 @@
 import Head from "next/head";
-import {
-  AiFillTwitterCircle,
-  AiFillLinkedin,
-  AiFillYoutube,
-} from "react-icons/ai";
 import { BsFillMoonStarsFill } from "react-icons/bs";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaLink } from "react-icons/fa";
 import { IoLogoVercel } from "react-icons/io5";
-import { useState } from "react";
-import deved from "../public/dev-ed-wave.png";
-import Image from "next/image";
-import { Card, CardBody, Carousel } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
+import { Button, Card, CardBody, Carousel } from "@material-tailwind/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+const navs = [
+  {
+    id: 1,
+    href: "/",
+    text: "Home",
+  },
+  {
+    id: 2,
+    href: "/project",
+    text: "Project",
+  },
+];
+const llas = [
+  {
+    id: 1,
+    href: "https://github.com/aristuchahya/lakoe",
+    icon: <FaGithub className="w-5 h-5" />,
+    text: "Link Github",
+  },
+  {
+    id: 2,
+    href: "https://lakoe-frontend.vercel.app/",
+    icon: <IoLogoVercel className="w-5 h-5" />,
+    text: "Link Deploy",
+  },
+];
+const lcas = [
+  {
+    id: 1,
+    href: "https://github.com/ramakusuma10/CircleApp",
+    icon: <FaGithub className="w-5 h-5" />,
+    text: "Link Github FE",
+  },
+  {
+    id: 2,
+    href: "https://github.com/ramakusuma10/CircleAppBE",
+    icon: <FaGithub className="w-5 h-5" />,
+    text: "Link Github BE",
+  },
+  {
+    id: 3,
+    href: "https://circle-app-pink.vercel.app",
+    icon: <IoLogoVercel className="w-5 h-5" />,
+    text: "Link Deploy",
+  },
+];
+const ltas = [
+  {
+    id: 1,
+    href: "https://github.com/tiyoigusty/trivia_project",
+    icon: <FaGithub className="w-5 h-5" />,
+    text: "Link Github",
+  },
+];
 
 export default function Project() {
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedText, setSelectedText] = useState(null);
+  const router = useRouter();
 
   const handleDarkMode = () => {
     setDarkMode(!darkMode);
+  };
+
+  useEffect(() => {
+    const savedText = localStorage.getItem("selectedText");
+    if (savedText) {
+      setSelectedText(savedText);
+    }
+  }, []);
+
+  const navClick = (href, text) => {
+    localStorage.setItem("selectedText", text);
+    router.push(href).then(() => {
+      setSelectedText(text);
+    });
+  };
+  const linkClick = (href) => {
+    window.open(href, "_blank");
   };
 
   return (
@@ -31,27 +100,18 @@ export default function Project() {
           <nav className="py-10 mb-12 flex justify-between dark:text-white px-10 ">
             <h1 className="font-burtons text-xl">RAMADEVELOPED</h1>
             <ul className="flex items-center gap-10 text-lg">
-              <li>
-                <a href="/" className="rainbow-hover rainbow-hover-light">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/project"
-                  className="rainbow-text rainbow-hover rainbow-hover-light"
-                >
-                  Project
-                </a>
-              </li>
-              <li>
-                <a
-                  className="bg-gradient-to-r from-cyan-500 text- to-teal-500 text-white px-8 py-2 border-none rounded-md ml-4"
-                  href="#"
-                >
-                  CV
-                </a>
-              </li>
+              {navs.map((nav) => (
+                <li key={nav.id}>
+                  <span
+                    onClick={() => navClick(nav.href, nav.text)}
+                    className={`cursor-pointer rainbow-hover rainbow-hover-light  ${
+                      selectedText === nav.text ? "rainbow-text" : " "
+                    }`}
+                  >
+                    {nav.text}
+                  </span>
+                </li>
+              ))}
               <li>
                 <BsFillMoonStarsFill
                   onClick={handleDarkMode}
@@ -104,64 +164,70 @@ export default function Project() {
                   Technologies
                 </h4>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://www.typescriptlang.org/">
+                  <Link href="https://www.typescriptlang.org/">
+                  <a target="_blank">
                     <img
                       src="typescript.png"
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://react.dev/">
+                  </Link>
+                  <Link href="https://react.dev/">
+                  <a target="_blank">
                     <img src="reactjs.png" className="h-20 w-20 object-cover" />
                   </a>
-                  <a href="https://tailwindcss.com/">
+                  </Link>
+                  <Link href="https://tailwindcss.com/">
+                  <a target="_blank">
                     <img
                       src="tailwind.png"
                       className="h-20 w-20 object-cover"
                     />
-                  </a>
-                  <a href="https://nestjs.com/">
+                  </a> 
+                  </Link>
+                  <Link href="https://nestjs.com/">
+                  <a target="_blank">
                     <img src="nestjs.png" className="h-20 w-20 object-cover" />
                   </a>
+                  </Link>
                 </div>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://www.postgresql.org/">
+                  <Link href="https://www.postgresql.org/">
+                  <a target="_blank">
                     <img
                       src="postgresql.png"
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://www.prisma.io/">
+                  </Link>
+                  <Link href="https://www.prisma.io/">
+                  <a target="_blank">
                     <img
                       src={darkMode ? "prismalight.png" : "prisma.png"}
                       className="h-20 w-20 object-cover"
                     />
                   </a>
+                  </Link>
                 </div>
                 <div className="border-b-2 mt-6"></div>
                 <div className="flex flex-row w-full justify-center mt-10 gap-8">
-                  <a
-                    href="#_"
-                    className="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
+                  {llas.map((lla) => (
+                  <div
+                    key={lla.id}
                   >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <FaGithub className="w-5 h-5" />
-                      Link Github
-                    </span>
-                  </a>
-                  <a
-                    href="https://lakoe-frontend.vercel.app/"
-                    target="_blank"
-                    className="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <IoLogoVercel className="w-5 h-5" />
-                      Link Deploy
-                    </span>
-                  </a>
+                    <Button
+                      onClick={() => linkClick(lla.href)}
+                      className="cursor-pointer relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500 text-sm"
+                    >
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
+                      <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
+                      <span className="relative text-white flex flex-row items-center gap-2">
+                        {lla.icon}
+                        {lla.text}
+                      </span>
+                    </Button>
+                  </div>
+                ))}
                 </div>
               </CardBody>
             </Card>
@@ -196,81 +262,78 @@ export default function Project() {
                   Technologies
                 </h4>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://www.typescriptlang.org/">
+                  <Link href="https://www.typescriptlang.org/">
+                  <a target="_blank">
                     <img
                       src="typescript.png"
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://react.dev/">
+                  </Link>
+                  <Link href="https://react.dev/">
+                  <a target="_blank">
                     <img src="reactjs.png" className="h-20 w-20 object-cover" />
                   </a>
-                  <a href="https://https://v2.chakra-ui.com/">
+                  </Link>
+                  <Link href="https://v2.chakra-ui.com/">
+                  <a target="_blank">
                     <img
                       src="chakraui.png"
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://redux.js.org//">
+                  </Link>
+                  <Link href="https://redux.js.org/">
+                  <a target="_blank">
                     <img src="redux.png" className="h-20 w-20 object-cover" />
                   </a>
+                  </Link>
                 </div>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://expressjs.com/">
+                  <Link href="https://expressjs.com/">
+                  <a target="_blank">
                     <img
                       src={darkMode ? "expressjsputih.png" : "expressjs.png"}
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://www.postgresql.org/">
+                  </Link>
+                  <Link href="https://www.postgresql.org/">
+                  <a target="_blank">
                     <img
                       src="postgresql.png"
                       className="h-20 w-20 object-cover"
                     />
                   </a>
-                  <a href="https://www.prisma.io/">
+                  </Link>
+                  <Link href="https://www.prisma.io/">
+                  <a target="_blank">
                     <img
                       src={darkMode ? "prismalight.png" : "prisma.png"}
                       className="h-20 w-20 object-cover"
                     />
-                  </a>
+                  </a> 
+                  </Link>
                 </div>
                 <div className="border-b-2 mt-6"></div>
                 <div className="flex flex-row w-full justify-center mt-10 gap-8">
-                  <a
-                    href="https://github.com/ramakusuma10/CircleApp"
-                    class="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
+                {lcas.map((lca) => (
+                  <div
+                    key={lca.id}  
                   >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <FaGithub className="w-5 h-5" />
-                      Link Github FE
-                    </span>
-                  </a>
-                  <a
-                    href="https://github.com/ramakusuma10/CircleAppBE"
-                    class="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <FaGithub className="w-5 h-5" />
-                      Link Github BE
-                    </span>
-                  </a>
-                  <a
-                    href="https://lakoe-frontend.vercel.app/"
-                    target="_blank"
-                    className="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <IoLogoVercel className="w-5 h-5" />
-                      Link Deploy
-                    </span>
-                  </a>
+                    <Button
+                      onClick={() => linkClick(lca.href)}
+                      className="cursor-pointer relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500 text-sm"
+                    >
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
+                      <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
+                      <span className="relative text-white flex flex-row items-center gap-2">
+                        {lca.icon}
+                        {lca.text}
+                      </span>
+                    </Button>
+                  </div>
+                ))}
                 </div>
               </CardBody>
             </Card>
@@ -292,7 +355,7 @@ export default function Project() {
                 </p>
                 <div className="flex flex-col items-center">
                   <Carousel className="rounded-xl w-[300px]">
-                  <img
+                    <img
                       src="trivia/Register.jpeg"
                       className="h-[600px] w-[300px]"
                     />
@@ -310,59 +373,88 @@ export default function Project() {
                   Technologies
                 </h4>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://www.typescriptlang.org/">
-                    <img
-                      src="typescript.png"
-                      className="h-20 w-20 object-cover"
-                    />
-                  </a>
-                  <a href="https://react.dev/">
-                    <img src="reactjs.png" className="h-20 w-20 object-cover" />
-                  </a>
-                  <a href="https://reactnativeelements.com/">
-                    <img
-                      src="rne.png"
-                      className="h-20 w-20 object-cover"
-                    />
-                  </a>
-                  <a href="https://nestjs.com/">
-                    <img src="nestjs.png" className="h-20 w-20 object-cover" />
-                  </a>
+                  <Link href="https://www.typescriptlang.org/">
+                    <a target="_blank">
+                      <img
+                        src="typescript.png"
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://react.dev/">
+                    <a target="_blank">
+                      <img
+                        src="reactjs.png"
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://reactnativeelements.com/">
+                    <a target="_blank">
+                      <img
+                        src="rne.png"
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://nestjs.com/">
+                    <a target="_blank">
+                      <img
+                        src="nestjs.png"
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
                 </div>
                 <div className="flex flex-row justify-center mt-6 gap-6">
-                  <a href="https://www.postgresql.org/">
-                    <img
-                      src="postgresql.png"
-                      className="h-20 w-20 object-cover"
-                    />
-                  </a>
-                  <a href="https://www.prisma.io/">
-                    <img
-                      src={darkMode ? "prismalight.png" : "prisma.png"}
-                      className="h-20 w-20 object-cover"
-                    />
-                  </a>
-                  <a href="https://www.socket.io/">
-                    <img
-                      src={darkMode ? "socketio_logo_icon_white.png" : "socketio_logo_icon.png"}
-                      className="h-20 w-20 object-cover"
-                    />
-                  </a>
+                  <Link href="https://www.postgresql.org/">
+                    <a target="_blank">
+                      <img
+                        src="postgresql.png"
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://www.prisma.io/">
+                    <a target="_blank">
+                      <img
+                        src={darkMode ? "prismalight.png" : "prisma.png"}
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
+                  <Link href="https://socket.io/">
+                    <a target="_blank">
+                      <img
+                        src={
+                          darkMode
+                            ? "socketio_logo_icon_white.png"
+                            : "socketio_logo_icon.png"
+                        }
+                        className="cursor-pointer h-20 w-20 object-cover"
+                      />
+                    </a>
+                  </Link>
                 </div>
                 <div className="border-b-2 mt-6"></div>
-                <div className="flex flex-row w-full justify-center mt-10 gap-8">
-                  <a
-                    href="https://github.com/ramakusuma10/CircleApp"
-                    className="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
+                {ltas.map((lta) => (
+                  <div
+                    key={lta.id}
+                    className="flex flex-row w-full justify-center mt-10 gap-8"
                   >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
-                    <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
-                    <span className="relative text-white flex flex-row items-center gap-2">
-                      <FaGithub className="w-5 h-5" />
-                      Link Github
-                    </span>
-                  </a>
-                </div>
+                    <Button
+                      onClick={() => linkClick(lta.href)}
+                      className="cursor-pointer relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500 text-sm"
+                    >
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
+                      <span className="absolute bottom-0 right-0 block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
+                      <span className="relative text-white flex flex-row items-center gap-2">
+                        {lta.icon}
+                        {lta.text}
+                      </span>
+                    </Button>
+                  </div>
+                ))}
               </CardBody>
             </Card>
           </div>

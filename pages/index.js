@@ -4,15 +4,64 @@ import {
   AiFillLinkedin,
   AiFillYoutube,
 } from "react-icons/ai";
-import { BsFillMoonStarsFill } from "react-icons/bs";
-import { useState } from "react";
 import rama from "../public/ramak.png";
 import Image from "next/image";
+import Link from "next/link";
+import { BsFillMoonStarsFill } from "react-icons/bs";
+import { useState, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
-import { IoDocumentTextOutline } from "react-icons/io5"
-
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { useRouter } from "next/router";
+const navs = [
+  {
+    id: 1,
+    href: "/",
+    text: "Home",
+  },
+  {
+    id: 2,
+    href: "/project",
+    text: "Project",
+  },
+];
+const links = [
+  {
+    id: 1,
+    href: "https://github.com/ramakusuma10",
+    text: "Github",
+    icon: <FaGithub className="w-[20px] h-[20px]"/>
+  },
+  {
+    id: 2,
+    href: "CV/CV ATS & Portfolio - Rama Kusuma (Rev).pdf",
+    text: "Lihat CV",
+    icon: <IoDocumentTextOutline className="w-[20px] h-[20px]"/>
+  },
+];
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedText, setSelectedText] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Ambil nilai dari localStorage saat halaman dimuat
+    const savedText = localStorage.getItem("selectedText");
+    if (savedText) {
+      setSelectedText(savedText);
+    }
+  }, []);
+
+  const navClick = (href, text) => {
+    // Simpan `selectedText` ke localStorage dan navigasi
+    localStorage.setItem("selectedText", text);
+    router.push(href).then(() => {
+      setSelectedText(text);
+    });
+  };
+
+  const linkClick = (href) => {
+    window.open(href, '_blank');
+  };
 
   return (
     <div className={darkMode ? "dark" : ""}>
@@ -26,30 +75,18 @@ export default function Home() {
           <nav className="py-10 mb-12 flex justify-between dark:text-white px-10 ">
             <h1 className="font-burtons text-xl">RAMADEVELOPED</h1>
             <ul className="flex items-center gap-10 text-lg">
-              <li>
-                <a
-                  href="/"
-                  className="rainbow-text rainbow-hover rainbow-hover-light"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/project"
-                  className="rainbow-hover rainbow-hover-light"
-                >
-                  Project
-                </a>
-              </li>
-              <li>
-                <a
-                  className="bg-gradient-to-r from-cyan-500 text- to-teal-500 text-white px-8 py-2 border-none rounded-md ml-4"
-                  href="#"
-                >
-                  CV
-                </a>
-              </li>
+              {navs.map((nav) => (
+                <li key={nav.id}>
+                  <span
+                    onClick={() => navClick(nav.href,nav.text)}
+                    className={`cursor-pointer rainbow-hover rainbow-hover-light  ${
+                      selectedText === nav.text ? "rainbow-text" : ""
+                    }`}
+                  >
+                    {nav.text}
+                  </span>
+                </li>
+              ))}
               <li>
                 <BsFillMoonStarsFill
                   onClick={() => setDarkMode(!darkMode)}
@@ -81,26 +118,20 @@ export default function Home() {
               <Image src={rama} layout="fill" objectFit="cover" />
             </div>
             <div className="flex flex-row items-center mt-[50px] gap-10">
-              <a
-                href="https://github.com/ramakusuma10"
-                className="relative p-0.5 inline-flex items-center justify-center font-bold overflow-hidden group rounded-md"
+            {links.map((link) => (
+              <span
+                key={link.id}
+                onClick={() => linkClick(link.href)}
+                className="cursor-pointer relative p-0.5 inline-flex items-center justify-center font-bold overflow-hidden group rounded-md"
               >
                 <span className="w-full h-full bg-gradient-to-br from-[#ff8a05] via-[#ff5478] to-[#ff00c6] group-hover:from-[#ff00c6] group-hover:via-[#ff5478] group-hover:to-[#ff8a05] absolute"></span>
                 <span className="relative px-6 py-3 transition-all ease-out bg-gray-900 rounded-md group-hover:bg-opacity-0 duration-400">
                   <span className="relative text-white flex flex-row items-center gap-3">
-                  <FaGithub className="w-[20px] h-[20px]"/> Github</span>
+                   {link.icon}{link.text}
+                  </span>
                 </span>
-              </a>
-              <a
-                href="CV/CV ATS & Portfolio - Rama Kusuma (Rev).pdf"
-                className="relative p-0.5 inline-flex items-center justify-center font-bold overflow-hidden group rounded-md"
-              >
-                <span className="w-full h-full bg-gradient-to-br from-[#ff8a05] via-[#ff5478] to-[#ff00c6] group-hover:from-[#ff00c6] group-hover:via-[#ff5478] group-hover:to-[#ff8a05] absolute"></span>
-                <span className="relative px-6 py-3 transition-all ease-out bg-gray-900 rounded-md group-hover:bg-opacity-0 duration-400">
-                  <span className="relative text-white flex flex-row items-center gap-3">
-                  <IoDocumentTextOutline className="w-[20px] h-[20px]"/> Lihat CV</span>
-                </span>
-              </a>
+              </span>
+            ))}
             </div>
           </div>
         </section>
